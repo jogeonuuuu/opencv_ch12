@@ -1,5 +1,5 @@
 //12-1-1
-/*#include <iostream>
+#include <iostream>
 #include <opencv2/opencv.hpp>
 using namespace std;
 using namespace cv;
@@ -7,38 +7,38 @@ int main(void) {
 	Mat src = imread("labelex.png", IMREAD_GRAYSCALE);
 	if (src.empty()) { cerr << "Image load failed!" << endl; return -1; }
 	Mat bin;
-	threshold(src, bin, 0, 255, THRESH_BINARY_INV | THRESH_OTSU); //°ËÀº»ö ÇÈ¼¿Àº ¹è°æÀ¸·Î °£ÁÖÇÏ°í, Èò»ö ÇÈ¼¿Àº °´Ã¼·Î °£ÁÖÇÏ±â ¶§¹®¿¡ "THRESH_BINARY_INV"»ç¿ë
+	threshold(src, bin, 0, 255, THRESH_BINARY_INV | THRESH_OTSU); //ê²€ì€ìƒ‰ í”½ì…€ì€ ë°°ê²½ìœ¼ë¡œ ê°„ì£¼í•˜ê³ , í°ìƒ‰ í”½ì…€ì€ ê°ì²´ë¡œ ê°„ì£¼í•˜ê¸° ë•Œë¬¸ì— "THRESH_BINARY_INV"ì‚¬ìš©
 	Mat labels, stats, centroids;
 	int cnt = connectedComponentsWithStats(bin, labels, stats, centroids);
 	Mat dst;
 	cvtColor(src, dst, COLOR_GRAY2BGR);
 
-	//°¢ ·¹ÀÌºíÀÇ ¸éÀûÀÌ ÃÖ´ë, ÃÖ¼ÒÀÎ °´Ã¼ Ã£±â
+	//ê° ë ˆì´ë¸”ì˜ ë©´ì ì´ ìµœëŒ€, ìµœì†Œì¸ ê°ì²´ ì°¾ê¸°
 	int min = stats.at<int>(1, 4), max = stats.at<int>(1, 4);
 	int min_num = 1, max_num = 1;
 	for (int i = 2; i < cnt; i++) {
 		int* add = stats.ptr<int>(i);
-		if (min > add[4]) { //·¹ÀÌºíÀÇ ÃÖ¼Ò ¸éÀû
+		if (min > add[4]) { //ë ˆì´ë¸”ì˜ ìµœì†Œ ë©´ì 
 			min = add[4];
 			min_num = i;
 		}
-		if (max < add[4]) { //·¹ÀÌºíÀÇ ÃÖ´ë ¸éÀû
+		if (max < add[4]) { //ë ˆì´ë¸”ì˜ ìµœëŒ€ ë©´ì 
 			max = add[4];
 			max_num = i;
 		}
 	}
 
 	for (int i = 1; i < cnt; i++) {
-		cout << i << "¹ø ·¹ÀÌºí ¸éÀû: " << stats.at<int>(i, 4) << endl;
+		cout << i << "ë²ˆ ë ˆì´ë¸” ë©´ì : " << stats.at<int>(i, 4) << endl;
 	}
 	cout << endl;
 
-	cout << "¸éÀûÀÌ ÃÖ´ëÀÎ °´Ã¼ÀÇ ·¹ÀÌºí: " << max_num << endl;
-	cout << "¹«°ÔÁß½É(x, y): " << setw(5) << centroids.at<double>(max_num, 0) << ", " << centroids.at<double>(max_num, 1) << endl;
-	cout << "¸éÀûÀÌ ÃÖ¼ÒÀÎ °´Ã¼ÀÇ ·¹ÀÌºí: " << min_num << endl;
-	cout << "¹«°ÔÁß½É(x, y): " << setw(5) << centroids.at<double>(min_num, 0) << ", " << centroids.at<double>(min_num, 1) << endl;
+	cout << "ë©´ì ì´ ìµœëŒ€ì¸ ê°ì²´ì˜ ë ˆì´ë¸”: " << max_num << endl;
+	cout << "ë¬´ê²Œì¤‘ì‹¬(x, y): " << setw(5) << centroids.at<double>(max_num, 0) << ", " << centroids.at<double>(max_num, 1) << endl;
+	cout << "ë©´ì ì´ ìµœì†Œì¸ ê°ì²´ì˜ ë ˆì´ë¸”: " << min_num << endl;
+	cout << "ë¬´ê²Œì¤‘ì‹¬(x, y): " << setw(5) << centroids.at<double>(min_num, 0) << ", " << centroids.at<double>(min_num, 1) << endl;
 
-	//¸éÀûÀÌ ÃÖ´ë(red), ÃÖ¼Ò(blue) ·¹ÀÌºí Ç¥½Ã
+	//ë©´ì ì´ ìµœëŒ€(red), ìµœì†Œ(blue) ë ˆì´ë¸” í‘œì‹œ
 	int* p = stats.ptr<int>(min_num);
 	rectangle(dst, Rect(p[0], p[1], p[2], p[3]), Scalar(255, 0, 0));
 	p = stats.ptr<int>(max_num);
@@ -48,7 +48,8 @@ int main(void) {
 	imshow("dst", dst);
 	waitKey();
 	return 0;
-}*/
+}
+
 //12-1-2
 /*#include <iostream>
 #include <opencv2/opencv.hpp>
@@ -65,19 +66,19 @@ int main(void) {
 
 	Mat labels, stats, centroids;
 	int cnt = connectedComponentsWithStats(bin, labels, stats, centroids);
-	cout << "·¹ÀÌºí °¹¼ö: " << cnt - 1 << endl;
+	cout << "ë ˆì´ë¸” ê°¯ìˆ˜: " << cnt - 1 << endl;
 	cout << "label" << setw(5) << 'x' << "\t" << 'y' << "\t" << "width" << "\t" << "height" << "\t" << "area" << "\t" << "color[B, G, R]" << endl;
 	for (int i = 1; i < cnt; i++) {
 		int* p = stats.ptr<int>(i);
 		cout << i << "\t" << p[0] << "\t" << p[1] << "\t" << p[2] << "\t" << p[3] << "\t" << p[4] << "\t";
-		//°¢ ·¹ÀÌºí Áß½ÉÁÂÇ¥¸¦ ÀÌ¿ëÇÑ ·¹ÀÌºí [B, G, R] Ãâ·Â
+		//ê° ë ˆì´ë¸” ì¤‘ì‹¬ì¢Œí‘œë¥¼ ì´ìš©í•œ ë ˆì´ë¸” [B, G, R] ì¶œë ¥
 		int x = cvRound(centroids.at<double>(i, 0));
 		int y = cvRound(centroids.at<double>(i, 1));
 		cout << src.at<Vec3b>(y, x) << endl;
-		//°¢ ·¹ÀÌºí Áß½ÉÁÂÇ¥¸¦ ÀÌ¿ëÇÑ ·¹ÀÌºí°ª Ãâ·Â
+		//ê° ë ˆì´ë¸” ì¤‘ì‹¬ì¢Œí‘œë¥¼ ì´ìš©í•œ ë ˆì´ë¸”ê°’ ì¶œë ¥
 		String num = format("%d", i);
 		putText(src, num, Point(x, y), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 255, 255));
-		//°¢ ·¹ÀÌºí Ç¥½Ã
+		//ê° ë ˆì´ë¸” í‘œì‹œ
 		rectangle(src, Rect(p[0], p[1], p[2], p[3]), Scalar(0, 255, 255));
 	}
 
@@ -104,10 +105,10 @@ int main(void) {
 	Mat labels, stats, centroids;
 	int cnt = connectedComponentsWithStats(bin, labels, stats, centroids);
 	for (int i = 1; i < cnt; i++) {
-		//cout << i << "¹ø °´Ã¼ÀÇ ¹«°ÔÁß½É: " << Point(centroids.at<double>(i, 0), centroids.at<double>(i, 1)) << endl;
-		cout << i << "¹ø °´Ã¼ÀÇ ¹«°ÔÁß½É: (" << centroids.at<double>(i, 0) << ", " << centroids.at<double>(i, 1) << ")" << endl;
+		//cout << i << "ë²ˆ ê°ì²´ì˜ ë¬´ê²Œì¤‘ì‹¬: " << Point(centroids.at<double>(i, 0), centroids.at<double>(i, 1)) << endl;
+		cout << i << "ë²ˆ ê°ì²´ì˜ ë¬´ê²Œì¤‘ì‹¬: (" << centroids.at<double>(i, 0) << ", " << centroids.at<double>(i, 1) << ")" << endl;
 
-		//Á÷Á¢ °è»êÇÑ °¢ ·¹ÀÌºíÀÇ ¹«°ÔÁß½É
+		//ì§ì ‘ ê³„ì‚°í•œ ê° ë ˆì´ë¸”ì˜ ë¬´ê²Œì¤‘ì‹¬
 		int x_value = 0, y_value = 0;
 		int count = 0;
 		for (int x = stats.at<int>(i, 0); x < stats.at<int>(i, 0) + stats.at<int>(i, 2); x++) {
@@ -119,7 +120,7 @@ int main(void) {
 				}
 			}
 		}
-		cout << "Á÷Á¢ °è»ê: " << setw(11) << "(" << (double)x_value / count << ", " << (double)y_value / count << ")" << endl << endl;
+		cout << "ì§ì ‘ ê³„ì‚°: " << setw(11) << "(" << (double)x_value / count << ", " << (double)y_value / count << ")" << endl << endl;
 	}
 	return 0;
 }*/
@@ -129,25 +130,25 @@ int main(void) {
 using namespace std;
 using namespace cv;
 int main(void) {
-	//ÄÃ·¯ ¿µ»ó(¿øº»)
+	//ì»¬ëŸ¬ ì˜ìƒ(ì›ë³¸)
 	Mat src = imread("car.png");
-	//±×·¹ÀÌ ¿µ»ó
+	//ê·¸ë ˆì´ ì˜ìƒ
 	Mat dst;
 	cvtColor(src, dst, COLOR_BGR2GRAY);
 
 	Mat dst_blur;
 	blur(dst, dst_blur, Size(5, 5));
-	//xÃà ¹æÇâÀ¸·Î 1Â÷ Æí¹ÌºĞÇÑ ¿µ»ó
+	//xì¶• ë°©í–¥ìœ¼ë¡œ 1ì°¨ í¸ë¯¸ë¶„í•œ ì˜ìƒ
 	Mat dx;
 	Sobel(dst_blur, dx, -1, 1, 0);
-	//ÀÌÁøÈ­ ¿µ»ó
+	//ì´ì§„í™” ì˜ìƒ
 	Mat binary;
 	threshold(dx, binary, 110, 255, THRESH_BINARY);
-	//ÃÖÁ¾ ¿µ»ó(¹øÈ£ÆÇ¸¸ °´Ã¼·Î ÀÎ½Ä)
+	//ìµœì¢… ì˜ìƒ(ë²ˆí˜¸íŒë§Œ ê°ì²´ë¡œ ì¸ì‹)
 	Mat final;
-	Mat kernel = getStructuringElement(MORPH_RECT, Size(40, 5)); //(40 by 5) Mat °´Ã¼¸¦ »ç¿ë
-	morphologyEx(binary, final, MORPH_ERODE, Mat()); //Ä§½Ä ¿¬»êÀ» ÅëÇØ °´Ã¼(Èò»ö)À» ¾ã°Ô ¸¸µç ÈÄ
-	morphologyEx(final, final, MORPH_CLOSE, kernel); //´İ±â ¿¬»ê(ÆØÃ¢->Ä§½Ä)À» ÅëÇØ kernel »çÀÌÁî¿¡ µé¾î°¡´Â °´Ã¼(Èò»ö)³¢¸® ¿¬°á
+	Mat kernel = getStructuringElement(MORPH_RECT, Size(40, 5)); //(40 by 5) Mat ê°ì²´ë¥¼ ì‚¬ìš©
+	morphologyEx(binary, final, MORPH_ERODE, Mat()); //ì¹¨ì‹ ì—°ì‚°ì„ í†µí•´ ê°ì²´(í°ìƒ‰)ì„ ì–‡ê²Œ ë§Œë“  í›„
+	morphologyEx(final, final, MORPH_CLOSE, kernel); //ë‹«ê¸° ì—°ì‚°(íŒ½ì°½->ì¹¨ì‹)ì„ í†µí•´ kernel ì‚¬ì´ì¦ˆì— ë“¤ì–´ê°€ëŠ” ê°ì²´(í°ìƒ‰)ë¼ë¦¬ ì—°ê²°
 
 	Mat labels, stats, centroids;
 	int cnt = connectedComponentsWithStats(final, labels, stats, centroids);
